@@ -5,29 +5,45 @@ import "server-only";
 
 const API_VERSION = "2024-10";
 
-type ShopifyProduct = {
+// ── Shared types ─────────────────────────────────────────────
+export type Money = {
+  amount: string;
+  currencyCode: string;
+};
+
+export type ProductImage = {
+  url: string;
+  altText: string | null;
+  width: number | null;
+  height: number | null;
+};
+
+export type Product = {
   id: string;
+  handle: string;
   title: string;
+  featuredImage: ProductImage | null;
   priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
+    minVariantPrice: Money;
   };
 };
 
 type ProductsResponse = {
   data?: {
     products: {
-      edges: { node: ShopifyProduct }[];
+      edges: { node: Product }[];
     };
   };
   errors?: { message: string }[];
 };
 
+// ── Low-level fetch ──────────────────────────────────────────
 // Runs a GraphQL query against the Storefront API using the private token
 // from .env.local. This only ever executes on the server.
-async function shopifyFetch<T>(query: string): Promise<T> {
+async function shopifyFetch<T>(
+  query: string,
+  variables: Record<string, unknown> = {}
+): Promise<T> {
   const domain = process.env.SHOPIFY_STORE_DOMAIN;
   const token = process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN;
 
@@ -43,8 +59,8 @@ async function shopifyFetch<T>(query: string): Promise<T> {
       "Content-Type": "application/json",
       "X-Shopify-Storefront-Access-Token": token,
     },
-    body: JSON.stringify({ query }),
-    // Don't cache while we're verifying the connection.
+    body: JSON.stringify({ query, variables }),
+    // Always fetch fresh product data while we're actively building.
     cache: "no-store",
   });
 
@@ -55,15 +71,23 @@ async function shopifyFetch<T>(query: string): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-// Fetch the first few products with just their titles and prices.
-export async function getFirstProducts() {
+// ── Queries ──────────────────────────────────────────────────
+// Fetch a page of products with the fields the grid needs. Newest first.
+export async function getProducts(first = 24): Promise<Product[]> {
   const query = `
-    {
-      products(first: 5) {
+    query Products($first: Int!) {
+      products(first: $first, sortKey: CREATED_AT, reverse: true) {
         edges {
           node {
             id
+            handle
             title
+            featuredImage {
+              url
+              altText
+              width
+              height
+            }
             priceRange {
               minVariantPrice {
                 amount
@@ -76,7 +100,7 @@ export async function getFirstProducts() {
     }
   `;
 
-  const json = await shopifyFetch<ProductsResponse>(query);
+  const json = await shopifyFetch<ProductsResponse>(query, { first });
 
   if (json.errors?.length) {
     throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);

@@ -1,26 +1,57 @@
 @import "tailwindcss";
 
+/*
+  ─────────────────────────────────────────────────────────────
+  Her Club Collective — brand theme
+  Adjust the values in :root below to re-tune the whole site.
+  Each brand colour has a "soft" tint (for backgrounds / washes)
+  and a fuller tone (for accents, hovers, highlights).
+  ─────────────────────────────────────────────────────────────
+*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand palette */
+  --blush: #eeb9c8;          /* soft pink  */
+  --blush-soft: #fceef2;
+  --mint: #b6e3cd;           /* minty green */
+  --mint-soft: #e9f6f0;
+  --turquoise: #86d2d2;      /* turquoise  */
+  --turquoise-soft: #e2f5f5;
+  --butter: #f4e3a1;         /* pastel yellow */
+  --butter-soft: #fdf7df;
+
+  /* Neutrals */
+  --cream: #fbfaf8;          /* page background — warm off-white */
+  --ink: #2a2725;            /* primary text — soft near-black */
+  --muted: #857d76;          /* secondary text */
+  --line: #ece7e1;           /* hairline borders */
 }
 
+/*
+  Expose the palette to Tailwind as utility colours.
+  This generates bg-blush, text-turquoise, border-line, ring-mint, etc.
+*/
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-blush: var(--blush);
+  --color-blush-soft: var(--blush-soft);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-turquoise: var(--turquoise);
+  --color-turquoise-soft: var(--turquoise-soft);
+  --color-butter: var(--butter);
+  --color-butter-soft: var(--butter-soft);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cream: var(--cream);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+
+  /* Fonts (wired up in layout.tsx) */
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-cormorant);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
