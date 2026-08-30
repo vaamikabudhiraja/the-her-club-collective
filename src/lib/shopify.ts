@@ -108,3 +108,151 @@ export async function getProducts(first = 24): Promise<Product[]> {
 
   return json.data?.products.edges.map((edge) => edge.node) ?? [];
 }
+
+// ── Single product (detail page) ─────────────────────────────
+export type SelectedOption = {
+  name: string;
+  value: string;
+};
+
+export type ProductOption = {
+  id: string;
+  name: string;
+  values: string[];
+};
+
+export type ProductVariant = {
+  id: string;
+  title: string;
+  availableForSale: boolean;
+  selectedOptions: SelectedOption[];
+  price: Money;
+  image: ProductImage | null;
+};
+
+export type ProductDetail = {
+  id: string;
+  handle: string;
+  title: string;
+  description: string;
+  descriptionHtml: string;
+  featuredImage: ProductImage | null;
+  images: ProductImage[];
+  options: ProductOption[];
+  variants: ProductVariant[];
+  priceRange: {
+    minVariantPrice: Money;
+    maxVariantPrice: Money;
+  };
+};
+
+type ProductResponse = {
+  data?: {
+    product: {
+      id: string;
+      handle: string;
+      title: string;
+      description: string;
+      descriptionHtml: string;
+      featuredImage: ProductImage | null;
+      images: { edges: { node: ProductImage }[] };
+      options: ProductOption[];
+      variants: { edges: { node: ProductVariant }[] };
+      priceRange: { minVariantPrice: Money; maxVariantPrice: Money };
+    } | null;
+  };
+  errors?: { message: string }[];
+};
+
+// Fetch one product by its handle, with everything a detail page needs.
+// Returns null when no product matches (so the page can render a 404).
+export async function getProduct(handle: string): Promise<ProductDetail | null> {
+  const query = `
+    query Product($handle: String!) {
+      product(handle: $handle) {
+        id
+        handle
+        title
+        description
+        descriptionHtml
+        featuredImage {
+          url
+          altText
+          width
+          height
+        }
+        images(first: 10) {
+          edges {
+            node {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+        options {
+          id
+          name
+          values
+        }
+        variants(first: 100) {
+          edges {
+            node {
+              id
+              title
+              availableForSale
+              selectedOptions {
+                name
+                value
+              }
+              price {
+                amount
+                currencyCode
+              }
+              image {
+                url
+                altText
+                width
+                height
+              }
+            }
+          }
+        }
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+          maxVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
+    }
+  `;
+
+  const json = await shopifyFetch<ProductResponse>(query, { handle });
+
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+
+  const product = json.data?.product;
+  if (!product) return null;
+
+  // Flatten the GraphQL edges/nodes into plain arrays for easy use in UI.
+  return {
+    id: product.id,
+    handle: product.handle,
+    title: product.title,
+    description: product.description,
+    descriptionHtml: product.descriptionHtml,
+    featuredImage: product.featuredImage,
+    images: product.images.edges.map((edge) => edge.node),
+    options: product.options,
+    variants: product.variants.edges.map((edge) => edge.node),
+    priceRange: product.priceRange,
+  };
+}

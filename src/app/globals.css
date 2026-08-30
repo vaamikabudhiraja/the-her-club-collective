@@ -55,3 +55,30 @@ body {
   color: var(--ink);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
+
+/* Basic styling for merchant-authored product description HTML. */
+.rich-text p {
+  margin-bottom: 0.85rem;
+}
+.rich-text p:last-child {
+  margin-bottom: 0;
+}
+.rich-text ul,
+.rich-text ol {
+  margin: 0.5rem 0 0.85rem 1.25rem;
+  list-style: disc;
+}
+.rich-text ol {
+  list-style: decimal;
+}
+.rich-text li {
+  margin-bottom: 0.35rem;
+}
+.rich-text a {
+  color: var(--turquoise);
+  text-decoration: underline;
+}
+.rich-text strong {
+  color: var(--ink);
+  font-weight: 600;
+}

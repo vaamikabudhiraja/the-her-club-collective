@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { formatMoney } from "@/lib/money";
 import type { Product } from "@/lib/shopify";
 
@@ -28,9 +29,12 @@ export function ProductCard({
   const tint = TINTS[index % TINTS.length];
 
   return (
-    <article className="group flex flex-col">
+    <Link
+      href={`/products/${product.handle}`}
+      className="group flex flex-col focus:outline-none"
+    >
       <div
-        className={`relative aspect-square w-full overflow-hidden rounded-2xl ${tint} ring-1 ring-line`}
+        className={`relative aspect-square w-full overflow-hidden rounded-2xl ${tint} ring-1 ring-line transition-shadow duration-300 group-hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-turquoise`}
       >
         {featuredImage ? (
           <Image
@@ -50,9 +54,11 @@ export function ProductCard({
       </div>
 
       <div className="mt-3.5 flex flex-col gap-1">
-        <h3 className="font-serif text-base leading-snug text-ink">{title}</h3>
+        <h3 className="font-serif text-base leading-snug text-ink transition-colors group-hover:text-turquoise">
+          {title}
+        </h3>
         <p className="text-sm text-muted">{price}</p>
       </div>
-    </article>
+    </Link>
   );
 }
