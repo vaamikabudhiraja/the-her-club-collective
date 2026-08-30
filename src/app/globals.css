@@ -9,21 +9,22 @@
   ─────────────────────────────────────────────────────────────
 */
 :root {
-  /* Brand palette */
-  --blush: #eeb9c8;          /* soft pink  */
-  --blush-soft: #fceef2;
-  --mint: #b6e3cd;           /* minty green */
-  --mint-soft: #e9f6f0;
-  --turquoise: #86d2d2;      /* turquoise  */
-  --turquoise-soft: #e2f5f5;
-  --butter: #f4e3a1;         /* pastel yellow */
-  --butter-soft: #fdf7df;
+  /* Brand palette — saturated "base" for fills/accents, "soft" tint for washes.
+     Tune these two per colour to re-flavour the whole site. */
+  --blush: #ff6ea6;          /* punchy pink   */
+  --blush-soft: #ffe3ee;
+  --mint: #34cf9b;           /* fresh mint    */
+  --mint-soft: #d9f6ec;
+  --turquoise: #1cbfd4;      /* bright turquoise */
+  --turquoise-soft: #d1f2f6;
+  --butter: #ffce33;         /* pastel-pop yellow */
+  --butter-soft: #fff2c6;
 
   /* Neutrals */
-  --cream: #fbfaf8;          /* page background — warm off-white */
-  --ink: #2a2725;            /* primary text — soft near-black */
-  --muted: #857d76;          /* secondary text */
-  --line: #ece7e1;           /* hairline borders */
+  --cream: #fffdf9;          /* page background — warm near-white */
+  --ink: #1e1a19;            /* primary text — near-black */
+  --muted: #6d655f;          /* secondary text */
+  --line: #ece6df;           /* hairline borders */
 }
 
 /*
@@ -47,13 +48,86 @@
 
   /* Fonts (wired up in layout.tsx) */
   --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-cormorant);
+  --font-serif: var(--font-fraunces); /* expressive display font */
 }
 
 body {
   background: var(--cream);
   color: var(--ink);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Display headings use the expressive font with a little more weight/tightness. */
+.font-display {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── Brand UI primitives (reusable, token-driven) ─────────────
+   One playful button + chip language shared across the site.
+   Tune the palette tokens above and these follow automatically. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding: 0.95rem 2rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    color 0.2s ease;
+}
+.btn-primary {
+  background: var(--blush);
+  color: var(--ink);
+  box-shadow: 0 8px 22px -10px rgba(255, 110, 166, 0.6);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px -12px rgba(255, 110, 166, 0.7);
+}
+.btn-dark {
+  background: var(--ink);
+  color: var(--cream);
+}
+.btn-dark:hover {
+  transform: translateY(-2px);
+}
+.btn-outline {
+  background: transparent;
+  color: var(--ink);
+  box-shadow: inset 0 0 0 1.5px var(--ink);
+}
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--cream);
+  transform: translateY(-2px);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 9999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* Highlighter marker to emphasise a word in a headline. */
+.marker {
+  background: var(--butter);
+  border-radius: 0.35em;
+  padding: 0 0.12em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* ── Motion ───────────────────────────────────────────────────

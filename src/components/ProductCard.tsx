@@ -34,7 +34,7 @@ export function ProductCard({
       className="group flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1 focus:outline-none"
     >
       <div
-        className={`relative aspect-square w-full overflow-hidden rounded-2xl ${tint} ring-1 ring-line transition-shadow duration-300 group-hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-turquoise`}
+        className={`relative aspect-square w-full overflow-hidden rounded-3xl ${tint} ring-1 ring-line transition-all duration-300 group-hover:shadow-[0_18px_40px_-18px_rgba(30,26,25,0.35)] group-hover:ring-blush group-focus-visible:ring-2 group-focus-visible:ring-turquoise`}
       >
         {featuredImage ? (
           <Image
@@ -46,18 +46,20 @@ export function ProductCard({
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center p-6 text-center">
-            <span className="font-serif text-sm tracking-wide text-muted">
+            <span className="font-display text-sm tracking-wide text-muted">
               Her Club Collective
             </span>
           </div>
         )}
       </div>
 
-      <div className="mt-3.5 flex flex-col gap-1">
-        <h3 className="font-serif text-base leading-snug text-ink transition-colors group-hover:text-turquoise">
+      <div className="mt-4 flex items-start justify-between gap-3">
+        <h3 className="font-display text-base leading-snug text-ink transition-colors group-hover:text-blush">
           {title}
         </h3>
-        <p className="text-sm text-muted">{price}</p>
+        <span className="shrink-0 rounded-full bg-cream px-3 py-1 text-sm text-ink ring-1 ring-line">
+          {price}
+        </span>
       </div>
     </Link>
   );

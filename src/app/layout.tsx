@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
-import { Cormorant_Garamond } from "next/font/google";
+import { Fraunces } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,11 +12,12 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-// Elegant serif for the brand wordmark and headings — the "premium" note.
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+// Expressive display serif for the brand wordmark and headlines — the
+// playful-but-premium note. Opsz gives it character at large sizes.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  axes: ["opsz"],
 });
 
 export const metadata: Metadata = {
@@ -29,7 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${cormorant.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-cream text-ink">
         {/* If JS is disabled, reveal-on-scroll content must still be visible. */}

@@ -9,22 +9,22 @@ export function Header() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <Link
           href="/"
-          className="font-serif text-2xl tracking-wide text-ink transition-opacity hover:opacity-70"
+          className="font-display text-2xl tracking-tight text-ink transition-opacity hover:opacity-70"
         >
           Her Club Collective
         </Link>
 
         <div className="flex items-center gap-5 sm:gap-7">
-          <nav className="flex items-center gap-5 text-sm sm:gap-7">
+          <nav className="flex items-center gap-5 text-sm font-medium sm:gap-7">
             <Link
               href="/"
-              className="text-ink transition-colors hover:text-turquoise"
+              className="text-ink transition-colors hover:text-blush"
             >
               Shop
             </Link>
             <Link
               href="/about"
-              className="text-ink transition-colors hover:text-turquoise"
+              className="text-ink transition-colors hover:text-blush"
             >
               About
             </Link>
