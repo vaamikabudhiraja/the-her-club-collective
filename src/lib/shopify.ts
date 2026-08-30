@@ -256,3 +256,197 @@ export async function getProduct(handle: string): Promise<ProductDetail | null> 
     priceRange: product.priceRange,
   };
 }
+
+// ── Cart ─────────────────────────────────────────────────────
+export type CartLine = {
+  id: string; // the cart line id (used to update/remove)
+  quantity: number;
+  cost: { totalAmount: Money };
+  merchandise: {
+    id: string; // the variant id (merchandiseId)
+    title: string; // variant title, e.g. "Gold / Small"
+    image: ProductImage | null;
+    price: Money;
+    product: { title: string; handle: string };
+  };
+};
+
+export type Cart = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+  cost: {
+    subtotalAmount: Money;
+    totalAmount: Money;
+  };
+  lines: CartLine[];
+};
+
+// Raw shape as returned by GraphQL (lines wrapped in edges/nodes).
+type CartApi = {
+  id: string;
+  checkoutUrl: string;
+  totalQuantity: number;
+  cost: { subtotalAmount: Money; totalAmount: Money };
+  lines: { edges: { node: CartLine }[] };
+};
+
+type CartQueryResponse = {
+  data?: { cart: CartApi | null };
+  errors?: { message: string }[];
+};
+
+type CartMutationPayload = {
+  cart: CartApi | null;
+  userErrors: { message: string }[];
+};
+
+type CartMutationResponse = {
+  data?: Record<string, CartMutationPayload>;
+  errors?: { message: string }[];
+};
+
+export type CartLineInput = { merchandiseId: string; quantity: number };
+
+// Shared selection of cart fields, reused by every cart query/mutation.
+const CART_FRAGMENT = `
+  fragment CartParts on Cart {
+    id
+    checkoutUrl
+    totalQuantity
+    cost {
+      subtotalAmount { amount currencyCode }
+      totalAmount { amount currencyCode }
+    }
+    lines(first: 100) {
+      edges {
+        node {
+          id
+          quantity
+          cost { totalAmount { amount currencyCode } }
+          merchandise {
+            ... on ProductVariant {
+              id
+              title
+              image { url altText width height }
+              price { amount currencyCode }
+              product { title handle }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+// Flatten the GraphQL edges/nodes into a plain, easy-to-use Cart.
+function normalizeCart(cart: CartApi | null): Cart | null {
+  if (!cart) return null;
+  return {
+    id: cart.id,
+    checkoutUrl: cart.checkoutUrl,
+    totalQuantity: cart.totalQuantity,
+    cost: cart.cost,
+    lines: cart.lines.edges.map((edge) => edge.node),
+  };
+}
+
+// Runs a cart mutation, surfaces user errors, and returns the updated cart.
+// `field` is the mutation name (e.g. "cartLinesAdd") to read from the response.
+async function runCartMutation(
+  field: string,
+  query: string,
+  variables: Record<string, unknown>
+): Promise<Cart | null> {
+  const json = await shopifyFetch<CartMutationResponse>(query, variables);
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+  const payload = json.data?.[field];
+  if (payload?.userErrors?.length) {
+    throw new Error(payload.userErrors[0].message);
+  }
+  return normalizeCart(payload?.cart ?? null);
+}
+
+// Fetch an existing cart by id. Returns null if it no longer exists (expired).
+export async function getCart(cartId: string): Promise<Cart | null> {
+  const query = `
+    query Cart($id: ID!) {
+      cart(id: $id) { ...CartParts }
+    }
+    ${CART_FRAGMENT}
+  `;
+  const json = await shopifyFetch<CartQueryResponse>(query, { id: cartId });
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+  return normalizeCart(json.data?.cart ?? null);
+}
+
+// Create a brand-new cart seeded with the given lines.
+export async function cartCreate(lines: CartLineInput[]): Promise<Cart> {
+  const query = `
+    mutation CartCreate($lines: [CartLineInput!]) {
+      cartCreate(input: { lines: $lines }) {
+        cart { ...CartParts }
+        userErrors { message }
+      }
+    }
+    ${CART_FRAGMENT}
+  `;
+  const cart = await runCartMutation("cartCreate", query, { lines });
+  if (!cart) throw new Error("Failed to create cart");
+  return cart;
+}
+
+// Add lines to an existing cart. Returns null if the cart id is invalid.
+export async function cartLinesAdd(
+  cartId: string,
+  lines: CartLineInput[]
+): Promise<Cart | null> {
+  const query = `
+    mutation CartLinesAdd($cartId: ID!, $lines: [CartLineInput!]!) {
+      cartLinesAdd(cartId: $cartId, lines: $lines) {
+        cart { ...CartParts }
+        userErrors { message }
+      }
+    }
+    ${CART_FRAGMENT}
+  `;
+  return runCartMutation("cartLinesAdd", query, { cartId, lines });
+}
+
+// Update the quantity of specific cart lines.
+export async function cartLinesUpdate(
+  cartId: string,
+  lines: { id: string; quantity: number }[]
+): Promise<Cart | null> {
+  const query = `
+    mutation CartLinesUpdate($cartId: ID!, $lines: [CartLineUpdateInput!]!) {
+      cartLinesUpdate(cartId: $cartId, lines: $lines) {
+        cart { ...CartParts }
+        userErrors { message }
+      }
+    }
+    ${CART_FRAGMENT}
+  `;
+  return runCartMutation("cartLinesUpdate", query, { cartId, lines });
+}
+
+// Remove lines from a cart entirely.
+export async function cartLinesRemove(
+  cartId: string,
+  lineIds: string[]
+): Promise<Cart | null> {
+  const query = `
+    mutation CartLinesRemove($cartId: ID!, $lineIds: [ID!]!) {
+      cartLinesRemove(cartId: $cartId, lineIds: $lineIds) {
+        cart { ...CartParts }
+        userErrors { message }
+      }
+    }
+    ${CART_FRAGMENT}
+  `;
+  return runCartMutation("cartLinesRemove", query, { cartId, lineIds });
+}

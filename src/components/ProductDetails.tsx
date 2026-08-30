@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { formatMoney } from "@/lib/money";
+import { useCart } from "@/components/cart/CartProvider";
 import type { ProductDetail } from "@/lib/shopify";
 
 // Shopify represents a product with no real variants as a single option named
@@ -81,11 +82,18 @@ export function ProductDetails({ product }: { product: ProductDetail }) {
 
   const canAdd = Boolean(selectedVariant?.availableForSale);
 
-  // Placeholder until Step 3 wires the real Shopify cart.
-  const [note, setNote] = useState<string | null>(null);
-  function handleAddToCart() {
-    if (!canAdd) return;
-    setNote("Cart connects in the next step ✨");
+  // Add the selected variant to the live Shopify cart, then open the drawer.
+  const { addItem, openCart } = useCart();
+  const [adding, setAdding] = useState(false);
+  async function handleAddToCart() {
+    if (!canAdd || !selectedVariant) return;
+    try {
+      setAdding(true);
+      await addItem(selectedVariant.id, 1);
+      openCart();
+    } finally {
+      setAdding(false);
+    }
   }
 
   return (
@@ -188,16 +196,15 @@ export function ProductDetails({ product }: { product: ProductDetail }) {
           <button
             type="button"
             onClick={handleAddToCart}
-            disabled={!canAdd}
+            disabled={!canAdd || adding}
             className={`w-full rounded-full px-6 py-4 text-sm font-medium tracking-wide transition sm:w-auto sm:min-w-64 ${
               canAdd
-                ? "bg-ink text-cream hover:bg-ink/90"
+                ? "bg-ink text-cream hover:bg-ink/90 disabled:opacity-70"
                 : "cursor-not-allowed bg-line text-muted"
             }`}
           >
-            {canAdd ? "Add to cart" : "Sold out"}
+            {adding ? "Adding…" : canAdd ? "Add to cart" : "Sold out"}
           </button>
-          {note && <p className="mt-3 text-sm text-turquoise">{note}</p>}
         </div>
 
         {/* Description */}
