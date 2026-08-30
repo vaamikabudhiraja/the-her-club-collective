@@ -189,12 +189,47 @@ export function CartDrawer() {
             <p className="mt-1 text-xs text-muted">
               Taxes and shipping calculated at checkout.
             </p>
-            <a
-              href={cart.checkoutUrl}
-              className="mt-4 block rounded-full bg-ink px-6 py-4 text-center text-sm font-medium tracking-wide text-cream transition hover:bg-ink/90"
-            >
-              Checkout
-            </a>
+
+            {/*
+              Hand off to Shopify's own hosted checkout. checkoutUrl comes
+              straight from the Storefront cart object and points at Shopify —
+              payment, cards, and PCI all stay on Shopify's side. We disable it
+              while the cart is updating so we never send a stale URL.
+            */}
+            {cart.checkoutUrl && !busy ? (
+              <a
+                href={cart.checkoutUrl}
+                className="mt-4 block rounded-full bg-ink px-6 py-4 text-center text-sm font-medium tracking-wide text-cream transition hover:bg-ink/90"
+              >
+                Checkout
+              </a>
+            ) : (
+              <button
+                type="button"
+                disabled
+                className="mt-4 block w-full cursor-not-allowed rounded-full bg-line px-6 py-4 text-center text-sm font-medium tracking-wide text-muted"
+              >
+                {busy ? "Updating…" : "Checkout"}
+              </button>
+            )}
+
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-muted">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                aria-hidden="true"
+              >
+                <rect x="3" y="11" width="18" height="11" rx="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
+              Secure checkout powered by Shopify
+            </p>
           </div>
         )}
       </aside>
