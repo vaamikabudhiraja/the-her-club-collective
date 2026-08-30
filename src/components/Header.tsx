@@ -14,7 +14,23 @@ export function Header() {
           Her Club Collective
         </Link>
 
-        <CartButton />
+        <div className="flex items-center gap-5 sm:gap-7">
+          <nav className="flex items-center gap-5 text-sm sm:gap-7">
+            <Link
+              href="/"
+              className="text-ink transition-colors hover:text-turquoise"
+            >
+              Shop
+            </Link>
+            <Link
+              href="/about"
+              className="text-ink transition-colors hover:text-turquoise"
+            >
+              About
+            </Link>
+          </nav>
+          <CartButton />
+        </div>
       </div>
 
       {/* Thin brand accent line */}

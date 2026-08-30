@@ -31,7 +31,7 @@ export function ProductCard({
   return (
     <Link
       href={`/products/${product.handle}`}
-      className="group flex flex-col focus:outline-none"
+      className="group flex flex-col transition-transform duration-300 ease-out hover:-translate-y-1 focus:outline-none"
     >
       <div
         className={`relative aspect-square w-full overflow-hidden rounded-2xl ${tint} ring-1 ring-line transition-shadow duration-300 group-hover:shadow-md group-focus-visible:ring-2 group-focus-visible:ring-turquoise`}

@@ -56,6 +56,46 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+/* ── Motion ───────────────────────────────────────────────────
+   Scroll-reveal: elements start slightly down and faded, then ease
+   up into place when they enter the viewport (class toggled by JS).
+   Kept short and GPU-friendly (opacity + transform only). */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Smooth anchor scrolling (e.g. hero CTA → products). */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Accessibility: users who prefer reduced motion get a static site. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
 /* Basic styling for merchant-authored product description HTML. */
 .rich-text p {
   margin-bottom: 0.85rem;
