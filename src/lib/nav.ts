@@ -9,8 +9,19 @@ export const SHOP_ALL: NavLink = { label: "Shop all pieces", href: "/shop" };
 
 // Top-level links shown alongside the Shop dropdown.
 export const PRIMARY_LINKS: NavLink[] = [
+  { label: "What To Get Her", href: "/what-to-get-her" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
+];
+
+// Gift occasions — mapped to Shopify collections. Create matching collections
+// (handles below) in Shopify and add products; the pages populate automatically.
+export const OCCASION_LINKS: NavLink[] = [
+  { label: "Birthday", href: "/collections/birthday" },
+  { label: "Anniversary", href: "/collections/anniversary" },
+  { label: "Valentine’s", href: "/collections/valentines" },
+  { label: "Christmas", href: "/collections/christmas" },
+  { label: "Just Because", href: "/collections/just-because" },
 ];
 
 // Social profiles. Replace each href="#" with your real profile URL when ready
