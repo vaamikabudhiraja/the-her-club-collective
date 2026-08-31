@@ -2,144 +2,145 @@
 
 /*
   ─────────────────────────────────────────────────────────────
-  Her Club Collective — brand theme
-  Adjust the values in :root below to re-tune the whole site.
-  Each brand colour has a "soft" tint (for backgrounds / washes)
-  and a fuller tone (for accents, hovers, highlights).
+  Her Club Collective — brand theme (quiet luxury)
+  Warm neutral base + deep signature palette led by burgundy,
+  with forest green, chocolate, and warm gold as support.
+  Tune the values in :root and everything follows.
   ─────────────────────────────────────────────────────────────
 */
 :root {
-  /* Brand palette — saturated "base" for fills/accents, "soft" tint for washes.
-     Tune these two per colour to re-flavour the whole site. */
-  --blush: #ff6ea6;          /* punchy pink   */
-  --blush-soft: #ffe3ee;
-  --mint: #34cf9b;           /* fresh mint    */
-  --mint-soft: #d9f6ec;
-  --turquoise: #1cbfd4;      /* bright turquoise */
-  --turquoise-soft: #d1f2f6;
-  --butter: #ffce33;         /* pastel-pop yellow */
-  --butter-soft: #fff2c6;
+  /* Warm neutral base */
+  --bone: #f4efe6;      /* page background — warm, breathable */
+  --surface: #faf6ee;   /* cards / raised surfaces — a touch lighter */
+  --ink: #241f1b;       /* primary text — warm near-black */
+  --muted: #726860;     /* secondary text — warm taupe */
+  --line: #e6ddd0;      /* hairline borders */
 
-  /* Neutrals */
-  --cream: #fffdf9;          /* page background — warm near-white */
-  --ink: #1e1a19;            /* primary text — near-black */
-  --muted: #6d655f;          /* secondary text */
-  --line: #ece6df;           /* hairline borders */
+  /* Deep signature palette */
+  --burgundy: #5c2130;      /* PRIMARY brand colour */
+  --burgundy-deep: #481a26; /* hover / pressed */
+  --forest: #2c3a2f;        /* support */
+  --chocolate: #3d2b22;     /* support */
+  --gold: #b0894e;          /* warm gold accent */
+  --gold-soft: #f0e6d4;     /* faint gold wash */
 }
 
 /*
-  Expose the palette to Tailwind as utility colours.
-  This generates bg-blush, text-turquoise, border-line, ring-mint, etc.
+  Expose the palette to Tailwind as utility colours
+  (bg-burgundy, text-gold, border-line, bg-surface, etc.).
 */
 @theme inline {
-  --color-blush: var(--blush);
-  --color-blush-soft: var(--blush-soft);
-  --color-mint: var(--mint);
-  --color-mint-soft: var(--mint-soft);
-  --color-turquoise: var(--turquoise);
-  --color-turquoise-soft: var(--turquoise-soft);
-  --color-butter: var(--butter);
-  --color-butter-soft: var(--butter-soft);
-
-  --color-cream: var(--cream);
+  --color-bone: var(--bone);
+  --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-line: var(--line);
 
+  --color-burgundy: var(--burgundy);
+  --color-burgundy-deep: var(--burgundy-deep);
+  --color-forest: var(--forest);
+  --color-chocolate: var(--chocolate);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+
+  /* cream kept as an alias of bone for existing markup */
+  --color-cream: var(--bone);
+
+  /* Legacy accent aliases so not-yet-redesigned pages stay presentable
+     until they get the quiet-luxury treatment. */
+  --color-blush: var(--burgundy);
+  --color-blush-soft: var(--surface);
+  --color-mint: var(--forest);
+  --color-mint-soft: var(--surface);
+  --color-turquoise: var(--gold);
+  --color-turquoise-soft: var(--surface);
+  --color-butter: var(--gold);
+  --color-butter-soft: var(--gold-soft);
+
   /* Fonts (wired up in layout.tsx) */
   --font-sans: var(--font-geist-sans);
-  --font-serif: var(--font-fraunces); /* expressive display font */
+  --font-serif: var(--font-cormorant); /* elegant display serif */
 }
 
 body {
-  background: var(--cream);
+  background: var(--bone);
   color: var(--ink);
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* Display headings use the expressive font with a little more weight/tightness. */
+/* Display headings: the elegant serif, with refined tracking. */
 .font-display {
-  font-family: var(--font-serif), Georgia, serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+}
+
+/* Small uppercase label used for eyebrows / section kickers. */
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 /* ── Brand UI primitives (reusable, token-driven) ─────────────
-   One playful button + chip language shared across the site.
-   Tune the palette tokens above and these follow automatically. */
+   A quiet, refined button language. Tune the palette above and
+   these follow automatically. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.95rem 2rem;
+  border-radius: 3px;
+  padding: 1rem 2.25rem;
+  font-size: 0.78rem;
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   line-height: 1;
   transition:
-    transform 0.2s ease,
-    background-color 0.2s ease,
-    box-shadow 0.2s ease,
-    color 0.2s ease;
+    background-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 .btn-primary {
-  background: var(--blush);
-  color: var(--ink);
-  box-shadow: 0 8px 22px -10px rgba(255, 110, 166, 0.6);
+  background: var(--burgundy);
+  color: var(--bone);
 }
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 28px -12px rgba(255, 110, 166, 0.7);
-}
-.btn-dark {
-  background: var(--ink);
-  color: var(--cream);
-}
-.btn-dark:hover {
-  transform: translateY(-2px);
+  background: var(--burgundy-deep);
 }
 .btn-outline {
   background: transparent;
   color: var(--ink);
-  box-shadow: inset 0 0 0 1.5px var(--ink);
+  box-shadow: inset 0 0 0 1px var(--ink);
 }
 .btn-outline:hover {
   background: var(--ink);
-  color: var(--cream);
-  transform: translateY(-2px);
+  color: var(--bone);
 }
 
-.chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  border-radius: 9999px;
-  padding: 0.4rem 0.9rem;
-  font-size: 0.8rem;
-  font-weight: 500;
+/* Subtle text link with a gold underline. */
+.link-underline {
+  position: relative;
   color: var(--ink);
+  padding-bottom: 2px;
+  border-bottom: 1px solid var(--gold);
+  transition: color 0.3s ease;
 }
-
-/* Highlighter marker to emphasise a word in a headline. */
-.marker {
-  background: var(--butter);
-  border-radius: 0.35em;
-  padding: 0 0.12em;
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+.link-underline:hover {
+  color: var(--gold);
 }
 
 /* ── Motion ───────────────────────────────────────────────────
-   Scroll-reveal: elements start slightly down and faded, then ease
-   up into place when they enter the viewport (class toggled by JS).
-   Kept short and GPU-friendly (opacity + transform only). */
+   Understated scroll-reveal: a small, slow fade + rise. GPU-friendly
+   (opacity + transform only). Class toggled by JS on scroll-in. */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
+  transform: translateY(10px);
   transition:
-    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .reveal.is-visible {
   opacity: 1;
@@ -189,7 +190,7 @@ html {
   margin-bottom: 0.35rem;
 }
 .rich-text a {
-  color: var(--turquoise);
+  color: var(--gold);
   text-decoration: underline;
 }
 .rich-text strong {

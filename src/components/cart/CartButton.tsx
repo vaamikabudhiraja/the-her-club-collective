@@ -11,7 +11,7 @@ export function CartButton() {
       type="button"
       onClick={openCart}
       aria-label={`Open cart, ${count} item${count === 1 ? "" : "s"}`}
-      className="relative rounded-full p-2 text-ink transition-colors hover:bg-blush-soft"
+      className="relative rounded-full p-2 text-ink transition-colors hover:bg-surface"
     >
       <svg
         width="22"
@@ -30,7 +30,7 @@ export function CartButton() {
       </svg>
 
       {count > 0 && (
-        <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-turquoise px-1 text-xs font-medium text-ink">
+        <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-burgundy px-1 text-xs font-medium text-bone">
           {count}
         </span>
       )}

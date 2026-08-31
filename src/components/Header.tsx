@@ -1,30 +1,30 @@
 import Link from "next/link";
 import { CartButton } from "@/components/cart/CartButton";
 
-// Site header: brand wordmark on the left, live cart button on the right.
-// A slim palette gradient underlines the whole bar.
+// Site header: elegant wordmark, understated nav, cart. A single gold hairline
+// underlines the bar for a quiet, considered accent.
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-cream/85 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-line bg-bone/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <Link
           href="/"
-          className="font-display text-2xl tracking-tight text-ink transition-opacity hover:opacity-70"
+          className="font-display whitespace-nowrap text-xl tracking-tight text-ink transition-opacity hover:opacity-70 sm:text-2xl"
         >
           Her Club Collective
         </Link>
 
-        <div className="flex items-center gap-5 sm:gap-7">
-          <nav className="flex items-center gap-5 text-sm font-medium sm:gap-7">
+        <div className="flex items-center gap-6 sm:gap-8">
+          <nav className="flex items-center gap-6 text-sm sm:gap-8">
             <Link
               href="/"
-              className="text-ink transition-colors hover:text-blush"
+              className="text-ink transition-colors hover:text-burgundy"
             >
               Shop
             </Link>
             <Link
               href="/about"
-              className="text-ink transition-colors hover:text-blush"
+              className="text-ink transition-colors hover:text-burgundy"
             >
               About
             </Link>
@@ -33,8 +33,8 @@ export function Header() {
         </div>
       </div>
 
-      {/* Thin brand accent line */}
-      <div className="h-0.5 w-full bg-gradient-to-r from-blush via-turquoise to-butter opacity-70" />
+      {/* Thin gold hairline accent */}
+      <div className="h-px w-full bg-gold/40" />
     </header>
   );
 }

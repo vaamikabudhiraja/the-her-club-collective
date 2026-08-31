@@ -1,36 +1,34 @@
 import Link from "next/link";
 
-// Site footer: brand line, positioning, nav, and a copyright row. A soft mint
-// wash and the brand gradient keep it playful but calm.
+// Deep burgundy footer — the richest expression of the palette, grounding the
+// warm-neutral pages with a moment of depth. Gold hairline, cream text.
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="mt-24 bg-mint-soft/60">
-      {/* Brand accent line */}
-      <div className="h-1 w-full bg-gradient-to-r from-blush via-turquoise to-butter" />
+    <footer className="bg-burgundy text-bone">
+      {/* Gold hairline accent */}
+      <div className="h-px w-full bg-gold/50" />
 
       <div className="mx-auto max-w-6xl px-6 py-16">
-        <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex max-w-md flex-col gap-3">
-            <p className="font-display text-2xl text-ink">Her Club Collective</p>
-            <p className="text-sm leading-relaxed text-muted">
-              Jewellery that just gets you — carefully chosen, tarnish-free, and
-              made to last. Everyone’s invited.
+            <p className="font-display text-2xl">Her Club Collective</p>
+            <p className="text-sm leading-relaxed text-bone/70">
+              Modern fine jewellery — carefully chosen, tarnish-free, and made
+              to last.
             </p>
           </div>
 
-          <nav className="flex gap-8 text-sm">
-            <div className="flex flex-col gap-2.5">
-              <p className="text-xs font-medium uppercase tracking-[0.15em] text-muted">
-                Explore
-              </p>
-              <Link href="/" className="text-ink transition-colors hover:text-blush">
+          <nav className="flex gap-16 text-sm">
+            <div className="flex flex-col gap-3">
+              <p className="eyebrow text-gold">Explore</p>
+              <Link href="/" className="text-bone/85 transition-colors hover:text-gold">
                 Shop
               </Link>
               <Link
                 href="/about"
-                className="text-ink transition-colors hover:text-blush"
+                className="text-bone/85 transition-colors hover:text-gold"
               >
                 About
               </Link>
@@ -38,9 +36,9 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-12 flex flex-col gap-2 border-t border-line/70 pt-6 text-xs text-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-14 flex flex-col gap-2 border-t border-bone/15 pt-6 text-xs text-bone/60 sm:flex-row sm:items-center sm:justify-between">
           <p>© {year} Her Club Collective. All rights reserved.</p>
-          <p>Come find your piece 💛</p>
+          <p>Come find your piece.</p>
         </div>
       </div>
     </footer>
