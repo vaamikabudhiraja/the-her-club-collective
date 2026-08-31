@@ -5,67 +5,70 @@ import { Reveal } from "@/components/Reveal";
 export const metadata: Metadata = {
   title: "About — Her Club Collective",
   description:
-    "Carefully chosen, tarnish-free jewellery made to last. Everyone's invited — that's the collective.",
+    "The story behind Her Club Collective. Carefully chosen, tarnish free, made to last.",
 };
 
 export default function AboutPage() {
   return (
     <section className="relative overflow-hidden">
-      {/* Soft decorative palette washes. */}
+      {/* Soft, warm wash — subtle, in keeping with the quiet-luxury look. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-butter-soft blur-3xl"
-      />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute -left-20 top-40 h-64 w-64 rounded-full bg-mint-soft blur-3xl"
+        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-gold-soft blur-3xl"
       />
 
       <div className="relative mx-auto max-w-2xl px-6 py-20 sm:py-28">
         <Reveal>
-          <p className="mb-4 text-xs font-medium uppercase tracking-[0.22em] text-turquoise">
-            About
-          </p>
+          <p className="eyebrow text-gold">Our story</p>
         </Reveal>
 
         <Reveal delay={90}>
-          <h1 className="font-serif text-4xl leading-tight text-ink sm:text-5xl">
-            Jewellery that just gets you.
+          <h1 className="font-display mt-5 text-3xl leading-snug text-ink sm:text-4xl">
+            Hi, I’m so glad you’re here.
           </h1>
         </Reveal>
 
-        <div className="mt-8 flex flex-col gap-6 text-lg leading-relaxed text-muted">
-          <Reveal delay={150}>
+        <Reveal delay={160}>
+          <div className="mt-8 flex flex-col gap-7 text-lg leading-relaxed text-ink/85">
             <p>
-              The dainty everyday pieces you never take off. The bold ones that
-              finish the fit. The funky little extras that make it yours. We’ve
-              got range — because you do.
+              I started Her Club Collective for a pretty simple reason. I love
+              jewellery. Not in a fussy way, just that the right piece makes me
+              feel like me. And I got tired of the other option.
             </p>
-          </Reveal>
 
-          <Reveal delay={210}>
             <p>
-              Here’s our thing: we keep it selective. No endless scroll of stuff
-              that tarnishes by Tuesday — just carefully chosen pieces,
-              tarnish-free and made to actually last. The kind you’ll still be
-              reaching for way past the trend cycle.
+              You know the one. The gorgeous €12 necklace from Bershka or
+              wherever, that looks perfect for exactly one week, until you forget
+              to take it off in the shower and it’s suddenly green, tarnished,
+              done. We’ve all got a little graveyard of those in a drawer
+              somewhere.
             </p>
-          </Reveal>
 
-          <Reveal delay={270}>
+            <p>
+              So I wanted to build something different. Not fast, not throwaway,
+              but pieces you choose slowly and actually keep. Tarnish free, made
+              to last, the kind of thing you reach for every day and it just
+              stays. Whether that’s a tiny everyday piece, something for a night
+              out, or a bit of fun, it should feel like you, and it should still
+              feel like you in a year.
+            </p>
+
+            <p>
+              I’m building this carefully, one piece at a time. Everyone’s
+              welcome here. No type, no rules. That’s the whole point of a
+              collective.
+            </p>
+
             <p className="text-ink">
-              Everyone’s invited. No type, no dress code, no vibe check. That’s
-              the collective. 💛
+              So have a look around. I hope you find something that feels like
+              yours.
             </p>
-          </Reveal>
-        </div>
+          </div>
+        </Reveal>
 
-        <Reveal delay={330}>
-          <Link
-            href="/#products"
-            className="mt-10 inline-flex items-center rounded-full bg-ink px-8 py-4 text-sm font-medium tracking-wide text-cream transition hover:bg-ink/90"
-          >
-            Come find your piece
+        <Reveal delay={240}>
+          <Link href="/shop" className="btn btn-primary mt-12">
+            Shop the collection
           </Link>
         </Reveal>
       </div>
