@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SocialLinks } from "@/components/SocialLinks";
 
 // Deep burgundy footer — the richest expression of the palette, grounding the
 // warm-neutral pages with a moment of depth. Gold hairline, cream text.
@@ -18,6 +19,7 @@ export function Footer() {
               Modern fine jewellery — carefully chosen, tarnish-free, and made
               to last.
             </p>
+            <SocialLinks className="mt-2 text-bone" />
           </div>
 
           <nav className="flex gap-16 text-sm">

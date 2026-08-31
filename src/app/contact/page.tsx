@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
+import { SocialLinks } from "@/components/SocialLinks";
 
 export const metadata: Metadata = {
   title: "Contact — Her Club Collective",
@@ -32,6 +33,13 @@ export default function ContactPage() {
         >
           Email us
         </a>
+      </Reveal>
+
+      <Reveal delay={300}>
+        <div className="mt-14 flex flex-col items-center gap-4">
+          <p className="eyebrow text-muted">Follow along</p>
+          <SocialLinks className="justify-center text-ink" />
+        </div>
       </Reveal>
     </section>
   );

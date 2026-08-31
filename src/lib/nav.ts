@@ -13,6 +13,15 @@ export const PRIMARY_LINKS: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Social profiles. Replace each href="#" with your real profile URL when ready
+// (remove any platform you don't use). These render on Contact + in the footer.
+export type SocialLink = { label: "Instagram" | "TikTok" | "Pinterest"; href: string };
+export const SOCIAL_LINKS: SocialLink[] = [
+  { label: "Instagram", href: "#" },
+  { label: "TikTok", href: "#" },
+  { label: "Pinterest", href: "#" },
+];
+
 // Browse by jewellery type — driven by Shopify product type.
 export const TYPE_LINKS: NavLink[] = [
   { label: "Necklaces", href: "/type/necklaces" },
