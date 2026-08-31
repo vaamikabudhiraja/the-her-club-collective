@@ -23,6 +23,11 @@
   --chocolate: #3d2b22;     /* support */
   --gold: #b0894e;          /* warm gold accent */
   --gold-soft: #f0e6d4;     /* faint gold wash */
+
+  /* Motion easing — the feel of the whole site's micro-interactions.
+     ease-out = smooth deceleration; spring = a gentle, tasteful overshoot. */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
 }
 
 /*
@@ -98,17 +103,26 @@ body {
   letter-spacing: 0.14em;
   text-transform: uppercase;
   line-height: 1;
+  will-change: transform;
   transition:
-    background-color 0.3s ease,
-    color 0.3s ease,
-    box-shadow 0.3s ease;
+    background-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    transform 0.45s var(--ease-spring);
+}
+/* Satisfying press: a quick, springy squash that releases smoothly. */
+.btn:active {
+  transform: scale(0.96);
+  transition-duration: 0.09s;
 }
 .btn-primary {
   background: var(--burgundy);
   color: var(--bone);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0);
 }
 .btn-primary:hover {
   background: var(--burgundy-deep);
+  box-shadow: 0 10px 24px -14px rgba(92, 33, 48, 0.9);
 }
 .btn-outline {
   background: transparent;
@@ -120,16 +134,66 @@ body {
   color: var(--bone);
 }
 
-/* Subtle text link with a gold underline. */
+/* Subtle text link with a gold underline that wipes in from the left. */
 .link-underline {
   position: relative;
   color: var(--ink);
-  padding-bottom: 2px;
-  border-bottom: 1px solid var(--gold);
-  transition: color 0.3s ease;
+  padding-bottom: 3px;
+  transition: color 0.3s var(--ease-out);
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  width: 100%;
+  background: var(--gold);
+  transform: scaleX(1);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
 }
 .link-underline:hover {
   color: var(--gold);
+}
+
+/* Nav link: an elegant underline that wipes in on hover, out on leave. */
+.nav-link {
+  position: relative;
+  color: var(--ink);
+  transition: color 0.3s var(--ease-out);
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s var(--ease-out);
+}
+.nav-link:hover,
+.nav-link[data-active="true"] {
+  color: var(--burgundy);
+}
+.nav-link:hover::after,
+.nav-link[data-active="true"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Cart pulse — a gentle, rewarding bounce when an item is added. */
+@keyframes cart-pulse {
+  0% { transform: scale(1); }
+  35% { transform: scale(1.28); }
+  60% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.cart-pulse {
+  animation: cart-pulse 0.5s var(--ease-spring);
 }
 
 /* ── Motion ───────────────────────────────────────────────────
@@ -139,8 +203,8 @@ body {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity 0.8s var(--ease-out),
+    transform 0.8s var(--ease-out);
 }
 .reveal.is-visible {
   opacity: 1;

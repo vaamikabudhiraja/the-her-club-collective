@@ -2,7 +2,7 @@
 // Shopify data. Runs on the server, so the Storefront token stays server-side.
 import Link from "next/link";
 import { getProducts } from "@/lib/shopify";
-import { ProductCard } from "@/components/ProductCard";
+import { ProductGrid } from "@/components/ProductGrid";
 import { Reveal } from "@/components/Reveal";
 
 export default async function Home() {
@@ -77,15 +77,7 @@ export default async function Home() {
           </p>
         )}
 
-        {products.length > 0 && (
-          <div className="grid grid-cols-2 gap-x-6 gap-y-12 sm:grid-cols-3 sm:gap-x-8 lg:grid-cols-4">
-            {products.map((product, index) => (
-              <Reveal key={product.id} delay={(index % 4) * 70}>
-                <ProductCard product={product} />
-              </Reveal>
-            ))}
-          </div>
-        )}
+        {products.length > 0 && <ProductGrid products={products} />}
       </section>
 
       {/* ── Deep "promise" band — a moment of richness ───────── */}

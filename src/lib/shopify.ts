@@ -450,3 +450,89 @@ export async function cartLinesRemove(
   `;
   return runCartMutation("cartLinesRemove", query, { cartId, lineIds });
 }
+
+// ── Browse: collections & product types ──────────────────────
+// Shared product fields for grid listings.
+const PRODUCT_CARD_FIELDS = `
+  id
+  handle
+  title
+  featuredImage { url altText width height }
+  priceRange { minVariantPrice { amount currencyCode } }
+`;
+
+export type Collection = {
+  title: string;
+  description: string;
+  products: Product[];
+};
+
+type CollectionResponse = {
+  data?: {
+    collection: {
+      title: string;
+      description: string;
+      products: { edges: { node: Product }[] };
+    } | null;
+  };
+  errors?: { message: string }[];
+};
+
+// Fetch a Shopify collection by handle with its products. Null if not found.
+export async function getCollection(
+  handle: string,
+  first = 50
+): Promise<Collection | null> {
+  const query = `
+    query Collection($handle: String!, $first: Int!) {
+      collection(handle: $handle) {
+        title
+        description
+        products(first: $first, sortKey: CREATED_AT, reverse: true) {
+          edges { node { ${PRODUCT_CARD_FIELDS} } }
+        }
+      }
+    }
+  `;
+
+  const json = await shopifyFetch<CollectionResponse>(query, { handle, first });
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+
+  const collection = json.data?.collection;
+  if (!collection) return null;
+
+  return {
+    title: collection.title,
+    description: collection.description,
+    products: collection.products.edges.map((edge) => edge.node),
+  };
+}
+
+// Fetch products by their Shopify "product type" (e.g. Necklaces, Earrings).
+// Dynamic — no product handles are hard-coded.
+export async function getProductsByType(
+  type: string,
+  first = 50
+): Promise<Product[]> {
+  const query = `
+    query ProductsByType($query: String!, $first: Int!) {
+      products(first: $first, query: $query, sortKey: CREATED_AT, reverse: true) {
+        edges { node { ${PRODUCT_CARD_FIELDS} } }
+      }
+    }
+  `;
+
+  // Match the product_type field case-insensitively; quote to allow spaces.
+  const search = `product_type:"${type.replace(/"/g, '')}"`;
+  const json = await shopifyFetch<ProductsResponse>(query, {
+    query: search,
+    first,
+  });
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+
+  return json.data?.products.edges.map((edge) => edge.node) ?? [];
+}

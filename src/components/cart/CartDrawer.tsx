@@ -37,7 +37,7 @@ export function CartDrawer() {
       {/* Overlay */}
       <div
         onClick={closeCart}
-        className={`absolute inset-0 bg-ink/30 transition-opacity duration-300 ${
+        className={`absolute inset-0 bg-ink/30 [transition:opacity_0.42s_var(--ease-out)] ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -46,7 +46,7 @@ export function CartDrawer() {
       <aside
         role="dialog"
         aria-label="Shopping cart"
-        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-cream shadow-xl transition-transform duration-300 ease-out ${
+        className={`absolute right-0 top-0 flex h-full w-full max-w-md flex-col bg-cream shadow-xl [transition:transform_0.42s_var(--ease-out)] ${
           isOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
