@@ -7,9 +7,9 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "cdn.shopify.com",
-        port: "",
         pathname: "/**",
-        search: "",
+        // NOTE: no `search` restriction — Shopify image URLs always carry a
+        // `?v=<version>` query string, and `search: ""` would reject them (400).
       },
     ],
   },
