@@ -3,7 +3,13 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
-import { TYPE_LINKS, COLLECTION_LINKS, type NavLink } from "@/lib/nav";
+import {
+  TYPE_LINKS,
+  COLLECTION_LINKS,
+  PRIMARY_LINKS,
+  SHOP_ALL,
+  type NavLink,
+} from "@/lib/nav";
 
 // Lint-clean client-mount detection (false on server, true after hydration).
 const emptySubscribe = () => () => {};
@@ -110,24 +116,36 @@ export function SiteNav() {
                 : "invisible -translate-y-1 opacity-0"
             }`}
           >
-            <div className="grid min-w-[380px] grid-cols-2 gap-10 rounded-xl border border-line bg-surface p-7 shadow-[0_30px_60px_-30px_rgba(36,31,27,0.4)]">
-              <LinkColumn
-                title="By type"
-                links={TYPE_LINKS}
-                onNavigate={() => setShopOpen(false)}
-              />
-              <LinkColumn
-                title="Collections"
-                links={COLLECTION_LINKS}
-                onNavigate={() => setShopOpen(false)}
-              />
+            <div className="min-w-[380px] rounded-xl border border-line bg-surface p-7 shadow-[0_30px_60px_-30px_rgba(36,31,27,0.4)]">
+              <Link
+                href={SHOP_ALL.href}
+                onClick={() => setShopOpen(false)}
+                className="nav-link mb-6 inline-flex items-center gap-1.5 font-display text-lg text-ink"
+              >
+                {SHOP_ALL.label}
+                <span aria-hidden="true">→</span>
+              </Link>
+              <div className="grid grid-cols-2 gap-10 border-t border-line pt-6">
+                <LinkColumn
+                  title="By type"
+                  links={TYPE_LINKS}
+                  onNavigate={() => setShopOpen(false)}
+                />
+                <LinkColumn
+                  title="Collections"
+                  links={COLLECTION_LINKS}
+                  onNavigate={() => setShopOpen(false)}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        <Link href="/about" className="nav-link text-sm">
-          About
-        </Link>
+        {PRIMARY_LINKS.map((link) => (
+          <Link key={link.href} href={link.href} className="nav-link text-sm">
+            {link.label}
+          </Link>
+        ))}
       </nav>
 
       {/* ── Mobile trigger ──────────────────────────────────── */}
@@ -197,6 +215,14 @@ export function SiteNav() {
           </div>
 
           <div className="flex flex-col gap-10 overflow-y-auto px-6 py-8">
+            <Link
+              href={SHOP_ALL.href}
+              onClick={() => setMobileOpen(false)}
+              className="nav-link inline-flex items-center gap-2 font-display text-2xl"
+            >
+              {SHOP_ALL.label}
+              <span aria-hidden="true">→</span>
+            </Link>
             <LinkColumn
               title="By type"
               links={TYPE_LINKS}
@@ -209,14 +235,17 @@ export function SiteNav() {
               size="lg"
               onNavigate={() => setMobileOpen(false)}
             />
-            <div className="border-t border-line pt-6">
-              <Link
-                href="/about"
-                onClick={() => setMobileOpen(false)}
-                className="nav-link font-display text-2xl"
-              >
-                About
-              </Link>
+            <div className="flex flex-col gap-4 border-t border-line pt-6">
+              {PRIMARY_LINKS.map((link) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="nav-link font-display text-2xl"
+                >
+                  {link.label}
+                </Link>
+              ))}
             </div>
           </div>
         </div>

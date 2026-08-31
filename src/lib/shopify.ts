@@ -536,3 +536,76 @@ export async function getProductsByType(
 
   return json.data?.products.edges.map((edge) => edge.node) ?? [];
 }
+
+// ── Shop All: full catalogue for client-side filtering/sorting ───
+// One fetch of the whole catalogue with the fields the filters need.
+// ~75 products is small, so filtering/sorting happens instantly on the
+// client — no refetch per filter change (smooth on mobile).
+export type ShopProduct = Product & {
+  productType: string;
+  createdAt: string;
+  tags: string[];
+  collections: { handle: string; title: string }[];
+  price: number; // numeric min price, for filtering + sorting
+};
+
+type AllProductsResponse = {
+  data?: {
+    products: {
+      edges: {
+        node: {
+          id: string;
+          handle: string;
+          title: string;
+          productType: string;
+          createdAt: string;
+          tags: string[];
+          featuredImage: ProductImage | null;
+          priceRange: { minVariantPrice: Money };
+          collections: { edges: { node: { handle: string; title: string } }[] };
+        };
+      }[];
+    };
+  };
+  errors?: { message: string }[];
+};
+
+export async function getAllProducts(first = 100): Promise<ShopProduct[]> {
+  const query = `
+    query AllProducts($first: Int!) {
+      products(first: $first, sortKey: CREATED_AT, reverse: true) {
+        edges {
+          node {
+            id
+            handle
+            title
+            productType
+            createdAt
+            tags
+            featuredImage { url altText width height }
+            priceRange { minVariantPrice { amount currencyCode } }
+            collections(first: 10) { edges { node { handle title } } }
+          }
+        }
+      }
+    }
+  `;
+
+  const json = await shopifyFetch<AllProductsResponse>(query, { first });
+  if (json.errors?.length) {
+    throw new Error(`Shopify GraphQL error: ${json.errors[0].message}`);
+  }
+
+  return (json.data?.products.edges ?? []).map(({ node }) => ({
+    id: node.id,
+    handle: node.handle,
+    title: node.title,
+    featuredImage: node.featuredImage,
+    priceRange: node.priceRange,
+    productType: node.productType || "",
+    createdAt: node.createdAt,
+    tags: node.tags ?? [],
+    collections: node.collections.edges.map((e) => e.node),
+    price: Number(node.priceRange.minVariantPrice.amount),
+  }));
+}

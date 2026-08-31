@@ -23,14 +23,23 @@ export function Footer() {
           <nav className="flex gap-16 text-sm">
             <div className="flex flex-col gap-3">
               <p className="eyebrow text-gold">Explore</p>
-              <Link href="/" className="text-bone/85 transition-colors hover:text-gold">
-                Shop
+              <Link
+                href="/shop"
+                className="text-bone/85 transition-colors hover:text-gold"
+              >
+                Shop All
               </Link>
               <Link
                 href="/about"
                 className="text-bone/85 transition-colors hover:text-gold"
               >
                 About
+              </Link>
+              <Link
+                href="/contact"
+                className="text-bone/85 transition-colors hover:text-gold"
+              >
+                Contact
               </Link>
             </div>
           </nav>
