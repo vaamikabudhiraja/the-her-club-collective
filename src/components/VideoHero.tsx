@@ -49,10 +49,7 @@ export function VideoHero() {
           Carefully chosen, tarnish-free, and made to last.
         </p>
         <div className="mt-9 flex flex-wrap items-center justify-center gap-x-7 gap-y-4">
-          <Link
-            href="/shop"
-            className="btn bg-bone text-ink shadow-[0_10px_30px_-12px_rgba(0,0,0,0.45)] hover:bg-white"
-          >
+          <Link href="/shop" className="btn btn-primary">
             Shop the collection
           </Link>
           <Link

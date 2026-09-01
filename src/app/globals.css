@@ -17,11 +17,8 @@
   --line: #e6ddd0;      /* hairline borders */
 
   /* Deep signature palette */
-  /* PRIMARY brand colour — deep turquoise (token name kept for compatibility;
-     it is referenced site-wide as bg-burgundy / text-burgundy). Chosen deep
-     enough that cream text stays readable on it. */
-  --burgundy: #0e7d88;      /* PRIMARY brand colour (turquoise) */
-  --burgundy-deep: #0a616a; /* hover / pressed */
+  --burgundy: #5c2130;      /* PRIMARY brand colour */
+  --burgundy-deep: #481a26; /* hover / pressed */
   --forest: #2c3a2f;        /* support */
   --chocolate: #3d2b22;     /* support */
   --gold: #b0894e;          /* warm gold accent */
@@ -125,7 +122,7 @@ body {
 }
 .btn-primary:hover {
   background: var(--burgundy-deep);
-  box-shadow: 0 10px 24px -14px rgba(14, 125, 136, 0.9);
+  box-shadow: 0 10px 24px -14px rgba(92, 33, 48, 0.9);
 }
 .btn-outline {
   background: transparent;
