@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { SocialLinks } from "@/components/SocialLinks";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 // Deep burgundy footer — the richest expression of the palette, grounding the
 // warm-neutral pages with a moment of depth. Gold hairline, cream text.
@@ -12,6 +13,16 @@ export function Footer() {
       <div className="h-px w-full bg-gold/50" />
 
       <div className="mx-auto max-w-6xl px-6 py-16">
+        {/* Email signup */}
+        <div className="mb-12 max-w-xl border-b border-bone/15 pb-12">
+          <p className="font-display text-2xl">Join the club</p>
+          <p className="mt-2 text-sm leading-relaxed text-bone/70">
+            First look at new pieces, the occasional treat, and zero spam. Just
+            the good stuff.
+          </p>
+          <NewsletterForm className="mt-5" />
+        </div>
+
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex max-w-md flex-col gap-3">
             <p className="font-display text-2xl">Her Club Collective</p>
@@ -51,6 +62,10 @@ export function Footer() {
           <p>© {year} Her Club Collective. All rights reserved.</p>
           <p>Come find your piece.</p>
         </div>
+
+        <p className="mt-6 text-center text-xs text-bone/60">
+          A small collection, chosen with care. So glad you’re here.
+        </p>
       </div>
     </footer>
   );
